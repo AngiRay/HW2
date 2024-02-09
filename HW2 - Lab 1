@@ -1,0 +1,121 @@
+---
+title: "HW2"
+author: "Angie Raymundo"
+date: "2024-02-08"
+output: html_document
+---
+
+Current Lab Partner: Hanfei
+
+```{r}
+xtabs(~ brfss22$ADDEPEV3 + brfss22$SEXVAR)
+```
+
+```{r}
+prop.table(table(brfss22$ADDEPEV3, brfss22$SEXVAR))
+```
+
+```{r}
+NN <- length(brfss22$ADDEPEV3)
+set.seed(12345)
+restrict_1 <- (runif(NN) < 0.1) # use just 10% 
+summary(restrict_1)
+```
+
+```{r}
+brfss_small <- subset(brfss22, restrict_1)
+```
+
+```{r}
+ggplot(brfss_small, aes(x = SEXVAR, fill = ADDEPEV3)) + geom_bar()
+```
+
+```{r}
+ggplot(brfss_small, aes(x = ADDEPEV3, fill = SEXVAR)) + geom_bar()
+```
+
+```{r}
+ggplot(brfss_small, aes(x = SEXVAR, fill = ADDEPEV3)) + geom_bar(position = "fill")
+```
+
+```{r}
+ggplot(brfss_small, aes(x = ADDEPEV3, fill = SEXVAR)) + geom_bar(position = "fill")
+```
+
+```{r}
+ggplot(brfss_small, aes(x = SEXVAR, fill = ADDEPEV3)) + geom_bar(position = "fill") + scale_fill_viridis_d()
+```
+
+```{r}
+ggplot(brfss_small, aes(x = ADDEPEV3, fill = SEXVAR)) + geom_bar(position = "fill") + scale_fill_viridis_d(option="plasma")
+```
+
+```{r}
+brfss_small_m <- subset(brfss_small,brfss_small$SEXVAR == "Male")
+brfss_small_f <- subset(brfss_small,brfss_small$SEXVAR == "Female")
+```
+
+```{r}
+ggplot(brfss_small_f, aes(x = ADDEPEV3, fill = EXERANY2)) + geom_bar(position = "fill") + scale_fill_viridis_d(option="rocket")
+```
+
+```{r}
+brfss22$Age_midpt <- fct_recode(brfss22$X_AGEG5YR, "21" = "Age 18 to 24",
+                                "27" = "Age 25 to 29", "32" = "Age 30 to 34",
+                                "37" = "Age 35 to 39", "42" = "Age 40 to 44",
+                                "47" = "Age 45 to 49", "52" = "Age 50 to 54",
+                                "57" = "Age 55 to 59", "62" = "Age 60 to 64",
+                                "67" = "Age 65 to 69", "72" = "Age 70 to 74",
+                                "77" = "Age 75 to 79", "82" = "Age 80 or older",
+                                NULL = "Dont know/Refused/Missing")
+
+summary(brfss22$Age_midpt)
+```
+
+```{r}
+brfss22$Age_midpt <- as.numeric(levels(brfss22$Age_midpt))[brfss22$Age_midpt]
+summary(brfss22$Age_midpt) 
+```
+
+```{r}
+xtabs(~ brfss_small$ADDEPEV3 +brfss_small$SMOKE100)
+
+xtabs(~ brfss_small$ADDEPEV3 +brfss_small$FIREARM5)
+
+xtabs(~ brfss_small$ADDEPEV3 +brfss_small$MSCODE)
+
+xtabs(~ brfss_small$ADDEPEV3 +brfss_small$ALCDAY4)
+
+xtabs(~ brfss_small$ADDEPEV3 +brfss_small$X_BMI5CAT)
+```
+
+
+```{r}
+ggplot(brfss_small, aes(x = SMOKE100 , fill = ADDEPEV3)) + geom_bar()
+
+ggplot(brfss_small, aes(x = FIREARMS , fill = ADDEPEV3)) + geom_bar()
+
+ggplot(brfss_small, aes(x = MSCODE , fill = ADDEPEV3)) + geom_bar()
+
+ggplot(brfss_small, aes(x = ALCDAY4, fill = ADDEPEV3)) + geom_bar()
+
+ggplot(brfss_small, aes(x = X_BMI5CAT , fill = ADDEPEV3)) + geom_bar()
+```
+
+```{r}
+ggplot(brfss_small_f, aes(x = ADDEPEV3, fill = FIREARMS)) + geom_bar(position = "fill") + scale_fill_viridis_d(option="rocket")
+
+ggplot(brfss_small_f, aes(x = ADDEPEV3, fill = X_BMI5CAT)) + geom_bar(position = "fill") + scale_fill_viridis_d(option="rocket")
+
+ggplot(brfss_small_f, aes(x = ADDEPEV3, fill = ALCDAY4)) + geom_bar(position = "fill") + scale_fill_viridis_d(option="rocket")
+```
+
+```{r}
+ggplot(brfss_small_m, aes(x = ADDEPEV3, fill = FIREARMS)) + geom_bar(position = "fill") + scale_fill_viridis_d(option="rocket")
+
+ggplot(brfss_small_m, aes(x = ADDEPEV3, fill = X_BMI5CAT)) + geom_bar(position = "fill") + scale_fill_viridis_d(option="rocket")
+
+ggplot(brfss_small_m, aes(x = ADDEPEV3, fill = ALCDAY4)) + geom_bar(position = "fill") + scale_fill_viridis_d(option="rocket")
+```
+
+What was surprising to me comparing depression with firearms is that those with depression don't have firearms while those without depression have more firearms. The same can be said for smoking cigarettes is less with people with depression. I do wonder the reason behind more individuals are depressed outside cities rather than residing in cities. What is not suprising is individuals with depression being obese and overweight.  
